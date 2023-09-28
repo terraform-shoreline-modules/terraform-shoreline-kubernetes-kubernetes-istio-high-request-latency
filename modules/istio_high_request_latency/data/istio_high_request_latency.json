@@ -3,6 +3,14 @@
   "description": "The Istio High Request Latency incident type refers to an issue where the average execution time for requests in Istio is longer than the expected threshold of 100ms. This may result in slow or unresponsive services, negatively impacting the user experience. It may require investigation and troubleshooting to identify the underlying cause and resolve the issue.",
   "params": [
     {
+      "name": "RESOURCE_NAME",
+      "value": ""
+    },
+    {
+      "name": "CONTAINER_NAME",
+      "value": ""
+    },
+    {
       "name": "RESOURCE_VALUE",
       "value": ""
     },
@@ -11,11 +19,7 @@
       "value": ""
     },
     {
-      "name": "POD_NAME",
-      "value": ""
-    },
-    {
-      "name": "CONTAINER_NAME",
+      "name": "SERVICE_NAME",
       "value": ""
     },
     {
@@ -23,11 +27,7 @@
       "value": ""
     },
     {
-      "name": "RESOURCE_NAME",
-      "value": ""
-    },
-    {
-      "name": "SERVICE_NAME",
+      "name": "POD_NAME",
       "value": ""
     },
     {
@@ -64,7 +64,7 @@
       "name": "cell_5",
       "type": "OP_LANG",
       "enabled": true,
-      "content": "pod | k8s_cluster_name=$K8S_CLUSTER_NAME | app='shoreline' | random=1 | limit=1 | invoke_get_pods_and_services_istio_system()"
+      "content": "pod | k8s_cluster_name=$K8S_CLUSTER_NAME | app='shoreline' | random=1 | limit=1 | invoke_get_pods_and_services()"
     },
     {
       "name": "cell_6",
@@ -100,7 +100,7 @@
       "name": "cell_11",
       "type": "OP_LANG",
       "enabled": true,
-      "content": "pod | k8s_cluster_name=$K8S_CLUSTER_NAME | app='shoreline' | random=1 | limit=1 | invoke_get_resources_k8s($NAMESPACE)"
+      "content": "pod | k8s_cluster_name=$K8S_CLUSTER_NAME | app='shoreline' | random=1 | limit=1 | invoke_get_vs_dr_gw($NAMESPACE)"
     },
     {
       "name": "cell_12",
@@ -124,7 +124,7 @@
       "name": "cell_15",
       "type": "OP_LANG",
       "enabled": true,
-      "content": "pod | k8s_cluster_name=$K8S_CLUSTER_NAME | app='shoreline' | random=1 | limit=1 | invoke_top_pods_describe_pod($POD_NAME, $NAMESPACE)"
+      "content": "pod | k8s_cluster_name=$K8S_CLUSTER_NAME | app='shoreline' | random=1 | limit=1 | invoke_top_pods_describe_pod($NAMESPACE, $POD_NAME)"
     },
     {
       "name": "cell_16",
@@ -136,7 +136,7 @@
       "name": "cell_17",
       "type": "OP_LANG",
       "enabled": true,
-      "content": "pod | k8s_cluster_name=$K8S_CLUSTER_NAME | app='shoreline' | random=1 | limit=1 | invoke_check_pod_resources($POD_NAME)"
+      "content": "pod | k8s_cluster_name=$K8S_CLUSTER_NAME | app='shoreline' | random=1 | limit=1 | invoke_cpu_memory_check($POD_NAME)"
     },
     {
       "name": "cell_18",
@@ -148,7 +148,7 @@
       "name": "cell_19",
       "type": "OP_LANG",
       "enabled": true,
-      "content": "pod | k8s_cluster_name=$K8S_CLUSTER_NAME | app='shoreline' | random=1 | limit=1 | invoke_patch_deployment_resources($RESOURCE_VALUE, $DEPLOYMENT_NAME, $RESOURCE_NAME)"
+      "content": "pod | k8s_cluster_name=$K8S_CLUSTER_NAME | app='shoreline' | random=1 | limit=1 | invoke_update_deployment_resource_limits($RESOURCE_NAME, $RESOURCE_VALUE, $DEPLOYMENT_NAME)"
     }
   ]
 }
